@@ -1,0 +1,30 @@
+{
+  "name": "es-substitution-apis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhilashkulkarniofficial/es-substitution-apis.git"
+  },
+  "author": "abhilashkulkarni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhilashkulkarniofficial/es-substitution-apis/issues"
+  },
+  "homepage": "https://github.com/abhilashkulkarniofficial/es-substitution-apis#readme",
+  "dependencies": {
+    "aws-sdk": "latest",
+    "body-parser": "latest",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "ejs": "latest",
+    "express": "latest",
+    "mysql": "latest",
+    "nodemon": "^2.0.4"
+  }
+}

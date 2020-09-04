@@ -1,0 +1,70 @@
+var mysql = require('mysql');
+var express = require('express');
+var cors = require('cors');
+
+require('dotenv').config();
+
+const app = express();
+const port = 3000;
+
+app.use(cors());
+
+var connection = mysql.createConnection({
+  host     : process.env.RDS_HOSTNAME,
+  user     : process.env.RDS_USERNAME,
+  password : process.env.RDS_PASSWORD,
+  port     : process.env.RDS_PORT
+});
+
+app.get('/', (req,res)=>{
+    // console.log('got request')
+    new Promise(function(resolve, reject){
+      connection.connect(function(err) {
+        if (err) {
+          console.error('Database connection failed: ' + err.stack);
+          return;
+        }
+        console.log('Connected to database.');
+      });
+      connection.query('USE school;')
+      connection.end();
+      res.send('connected to database')
+    })
+    
+  });
+
+app.get('/teachers', (req,res)=>{
+    console.log(req.query)
+    let classId = req.query.classId;
+    let subject = req.query.subject;
+    console.log(classId,subject)
+    if(classId || subject){
+        new Promise(function(resolve,reject){
+            connection.query('USE school;')
+            let query = `SELECT teacher_name from subjectTeachers where `
+            if(classId){
+                query = `${query} classId = "${classId}"`
+            }
+            if(classId && subject){
+                query = `${query} and subject = "${subject}"`
+            }else if(subject){
+                query = `${query} subject = "${subject}"` 
+            }
+            query = `${query};`
+            console.log(query)
+            connection.query(query, function(err, result, fields){
+                if(err) res.send(err)
+                if(result) res.send(result)
+            })
+            //res.send(result)
+            // res.send('good request')
+        })
+    }else{
+        res.send('bad request')
+    }
+    // res.send('got request for /teachers')
+})
+
+  app.listen(port, () => {
+    console.log(`Substitution App API listening at http://localhost:${port}`)
+  })
