@@ -37,11 +37,11 @@ app.get('/', (req,res)=>{
 app.get('/teachers', (req,res)=>{
     let classId = req.query.classId;
     let subject = req.query.subject;
-    // console.log(classId,subject)
+    console.log(classId,subject)
     if(classId || subject){
         new Promise(function(resolve,reject){
             connection.query('USE school;')
-            let query = `SELECT teacher_name from subjectTeachers where `
+            let query = `SELECT DISTINCT teacher_name from subjectTeachers where `
             if(classId){
                 query = `${query} classId = "${classId}"`
             }
