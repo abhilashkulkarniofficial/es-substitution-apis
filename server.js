@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var express = require('express');
 var cors = require('cors');
+var parseJson = require('./utils/parseResult.js')
 
 require('dotenv').config();
 
@@ -34,10 +35,9 @@ app.get('/', (req,res)=>{
   });
 
 app.get('/teachers', (req,res)=>{
-    console.log(req.query)
     let classId = req.query.classId;
     let subject = req.query.subject;
-    console.log(classId,subject)
+    // console.log(classId,subject)
     if(classId || subject){
         new Promise(function(resolve,reject){
             connection.query('USE school;')
@@ -51,18 +51,18 @@ app.get('/teachers', (req,res)=>{
                 query = `${query} subject = "${subject}"` 
             }
             query = `${query};`
-            console.log(query)
+            // console.log(query)
             connection.query(query, function(err, result, fields){
                 if(err) res.send(err)
-                if(result) res.send(result)
+                if(result) {
+                    // console.log(parseJson(result))
+                    res.send(parseJson(result))
+                }
             })
-            //res.send(result)
-            // res.send('good request')
         })
     }else{
         res.send('bad request')
     }
-    // res.send('got request for /teachers')
 })
 
   app.listen(port, () => {
